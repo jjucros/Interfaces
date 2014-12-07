@@ -70,7 +70,7 @@ public class MySQL_Conn {
 	 * @param insertSQL
 	 * @throws SQLException 
 	 */
-	public void runInsert(String insertSQL) throws SQLException{
+	public void runInsert(String insertSQL, String [] values) throws SQLException{
 		/*
 		 * Hay que trabajar más en esta función: pensar bien como se quiere
 		 * 		--> Parámetros dinamicos o estaticos??
@@ -80,8 +80,17 @@ public class MySQL_Conn {
 		
 		//Inicialmente solo se inserta en la tabla de Locations
 		
-	      // create the mysql insert preparedstatement
+	      // Se crea un PreparedStatement para poder hacer el INSERT
 	      PreparedStatement preparedStmt = (PreparedStatement) con.prepareStatement(insertSQL);
+	      
+	      int numPar = 0;
+	      numPar = values.length;
+	      int i=1;
+	      while(i <= numPar){
+	    	  preparedStmt.setString (i, values[i-1]);
+	    	  i++;	    	  
+	      }
+	      //Se agregan uno a uno los diferentes campos que se van a insertar
 	      //preparedStmt.setString (1, locID);
 	      //preparedStmt.setString (2, locName);
 	      
@@ -90,7 +99,7 @@ public class MySQL_Conn {
 	      
 	      
 	 	// execute the preparedstatement
-	      //preparedStmt.execute();
+	      preparedStmt.execute();
 
 		
 	}
